@@ -114,15 +114,14 @@ class Shopify:
                         current_stock.append(product["id"])
                         if product['id'] not in self.in_stock.keys():
                             self.in_stock.update({product['id']:site})
-                            if self.first_run == True:
+                            if self.first_run == False:
                                 self.LOG("CHECKER", f"New Product! Name: {product['title']}", "green")
                                 for variant in product["variants"]:
-                                    if variant["available"] == False:
+                                    if variant["available"] == True:
                                         sizes.append(f'{variant["title"]} | **[ATC]({site_stripped}/cart/{variant["id"]}:1)**\n')
                                 if sizes:
                                     price = product["variants"][0]["price"]
                                     self.alert(product["title"], f"{site_stripped}/products/"+product["handle"], product["images"][0]["src"], sizes, site_stripped, str(price))
-                                time.sleep(3600)
             for product in list(self.in_stock.keys()):
                 if product not in current_stock:
                     if self.in_stock[product] == site:
